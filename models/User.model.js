@@ -18,6 +18,32 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    isServiceProvider: {
+      type: Boolean,
+      required: true,
+    },
+    location: {
+      type: String,
+    },
+    pets: [{
+      type: Schema.Types.ObjectId,
+      ref: "Pet",
+    }],
+    services: [{
+      type: Schema.Types.ObjectId,
+      ref: "Service",
+    }],
+    reviews: [{
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    }],
+    profilePicture: {
+      type: String,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
