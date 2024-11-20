@@ -3,6 +3,7 @@ const { Schema, model } = require("mongoose");
 const serviceSchema = new Schema({ 
     provider: [{
         type: Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     }],
     description: {
@@ -18,6 +19,7 @@ const serviceSchema = new Schema({
     },
     review: [{
         type: Schema.Types.ObjectId,
+        ref: "Review",
     }],
 
 });
