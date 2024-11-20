@@ -15,7 +15,7 @@ router.post("/pets", isAuthenticated, (req, res, next) => {
     Pet.create({ petName, owner, species, bio, breed, age, weight, profilePicture })
         .then((response) => { res.status(201).json(response) })
         .catch((err) => {
-            console.log("Error whule creating new pet", err);
+            console.log("Error while creating new pet", err);
             res.status(500).json({ message: "Error while creating new pet" });
         });
 });
@@ -58,7 +58,7 @@ router.put("/pets/:petId", isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Pet.findByIdAndUpdate(petId, req.bodt, { new: true })
+    Pet.findByIdAndUpdate(petId, req.body, { new: true })
         .then((updatedPet) => res.json(updatedPet))
         .catch((err) => res.status(500).json(err));
 });
@@ -77,12 +77,15 @@ router.delete("/pets/:petId", isAuthenticated, (req, res, next) => {
     }
 
     Pet.findByIdAndDelete(petId)
-        .then(() =>
+        .then((deletedPet) => {
+            if (!deletedPet) {
+                return res.status(404).json({ message: "Pet not found" });
+            }
             res.json({
                 message: `Pet with ${petId} was removed from database`
             })
-        )
-        .catch((err) => res.status(500).json(err));
+                .catch((err) => res.status(500).json({ message: "Error deleting pet", error: err.message }));
+        });
 });
 
 
