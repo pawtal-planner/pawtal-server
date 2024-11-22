@@ -22,9 +22,9 @@ router.post("/pets", isAuthenticated, (req, res, next) => {
 
 // Get /api/pets - Get all pets
 
-router.get("/pets", (req, res, next) => {
+router.get("/pets", isAuthenticated,(req, res, next) => {
     Pet.find()
-        .populate("users")
+        .populate("owner")
         .then((allPets) => res.json(allPets))
         .catch((err) => res.status(500).json(err));
 });
@@ -32,7 +32,7 @@ router.get("/pets", (req, res, next) => {
 
 // Get /api/pets/:petId - Get one pet by id
 
-router.get("/pets/:petid", (req, res, next) => {
+router.get("/pets/:petId", isAuthenticated, (req, res, next) => {
     const { petId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(petId)) {
@@ -41,7 +41,7 @@ router.get("/pets/:petid", (req, res, next) => {
     }
 
     Pet.findById(petId)
-        .populate("users")
+        .populate("owner")
         .then((pet) => res.json(pet))
         .catch((err) => res.status(500).json(err));
 });
@@ -58,11 +58,10 @@ router.put("/pets/:petId", isAuthenticated, (req, res, next) => {
         return;
     }
 
-    Pet.findByIdAndUpdate(petId, req.body, { new: true })
+    Pet.findByIdAndUpdate(petId, req.body, { new: true , runValidators: true })
         .then((updatedPet) => res.json(updatedPet))
         .catch((err) => res.status(500).json(err));
 });
-
 
 // Delete /api/pets/:petId - Delete pet
 
@@ -82,10 +81,10 @@ router.delete("/pets/:petId", isAuthenticated, (req, res, next) => {
                 return res.status(404).json({ message: "Pet not found" });
             }
             res.json({
-                message: `Pet with ${petId} was removed from database`
-            })
-                .catch((err) => res.status(500).json({ message: "Error deleting pet", error: err.message }));
-        });
+                message: `Pet with ${petId} was removed from database`,
+            });
+        })
+        .catch((err) => res.status(500).json({ message: "Error deleting pet", error: err.message }));
 });
 
 
