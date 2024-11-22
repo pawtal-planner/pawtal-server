@@ -20,7 +20,10 @@ const userSchema = new Schema(
     },
     isServiceProvider: {
       type: Boolean,
-      required: true,
+      profilePicture: {
+        type: String,
+        default: "https://www.freepik.com/icon/user_1077114",
+      },
     },
     location: {
       type: String,
@@ -39,6 +42,7 @@ const userSchema = new Schema(
     }],
     profilePicture: {
       type: String,
+      default: "https://www.freepik.com/icon/user_1077012",
     },
     createdAt: {
       type: Date,
