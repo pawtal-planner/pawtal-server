@@ -24,4 +24,4 @@ const serviceSchema = new Schema({
 
 });
 
-module.exports = model("Service", appointmentSchema);
+module.exports = model("Service", serviceSchema);
