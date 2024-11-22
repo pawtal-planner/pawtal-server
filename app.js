@@ -18,6 +18,24 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
+const petRoutes = require("./routes/pet.routes");
+app.use("/api", petRoutes);
+
+const serviceRoutes = require("./routes/service.routes");
+app.use("/api", serviceRoutes);
+
+const reviewRoutes = require("./routes/review.routes");
+app.use("/api", reviewRoutes);
+
+const lostAndFoundRoutes = require("./routes/lostandfound.routes");
+app.use("/api", lostAndFoundRoutes);
+
+const appointmentRoutes = require("./routes/appointment.routes");
+app.use("/api", appointmentRoutes);
+
+const userRoutes = require("./routes/user.routes");
+app.use("/api", userRoutes);
+
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
@@ -25,3 +43,4 @@ app.use("/auth", authRoutes);
 require("./error-handling")(app);
 
 module.exports = app;
+ 
