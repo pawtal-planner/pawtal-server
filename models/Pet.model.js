@@ -7,6 +7,7 @@ const petSchema = new Schema({
     },
     owner: [{
         type: Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     }],
     species: {
@@ -24,6 +25,8 @@ const petSchema = new Schema({
         type: Number,
         min: 0,
         max: 30,
+        default: "unknown",
+        required: true,
     },
     weight: {
         type: Number,
@@ -31,7 +34,19 @@ const petSchema = new Schema({
     },
     profilePicture: {
         type: String,
-    }
+        default: function () {
+            const defaultImages = {
+                dog: "images/siberian-husky_375148.png",
+                cat: "/images/cat_6363565.png",
+                bird: "images/parrot_3157528.png",
+                fish: "images/whale_1864475.png",
+                reptile: "images/turtle_1303576.png",
+                rodent: "images/hamster_2351140.png",
+                other: "https://example.com/default-other.jpg",
+            };
+            return defaultImages[this.species] || defaultImages.other;
+        },
+    },
 })
 
 
