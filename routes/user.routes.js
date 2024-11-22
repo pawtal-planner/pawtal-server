@@ -6,41 +6,35 @@ const Review = require("../models/Review.model");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const router = require("./pet.routes.js");
 
-router.get("/user/:userId", isAuthenticated, (req, res, next) => {
+// Route to get another user's data by their ID
+router.get("/users/:userId", isAuthenticated, (req, res, next) => {
     const { userId } = req.params;
+
     User.findById(userId)
         .populate("pets")
         .populate("services")
         .populate("reviews")
-        .then((response) => res.status(200).json(response))
+        .then((response) => {
+            if (!response) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.status(200).json(response);
+        })
         .catch((err) => res.status(500).json(err));
 });
 
 
 // UPDATE profile picture
-const { uploader } = require("cloudinary").v2;
+
 
 router.put("/users/:userId/profile-picture", isAuthenticated, async (req, res, next) => {
     const { userId } = req.params;
-    if (!req.file) {
-        return res.status(400).json({ message: "Profile image file is required." });
-    }
+    const { profilePicture } = req.body;
 
-    try {
-        // Upload file to Cloudinary
-        const uploadResult = await uploader.upload(req.file.path);
-
-        const user = await User.findById(userId);
-        if (!user) return res.status(404).json({ message: "User not found." });
-
-        user.profileImg = uploadResult.secure_url; 
-        const updatedUser = await user.save();
-
-        res.json(updatedUser);
-    } catch (err) {
-        next(err);
-    }
-});
+       User.findByIdAndUpdate(userId, { profilePicture }, { new: true })
+        .then((updatedUser) => res.json(updatedUser))
+        .catch((err) => res.status(500).json(err));
+}); 
 
 // UPDATE Profile
 
@@ -73,7 +67,7 @@ router.delete("/users/:userId/profile-picture", isAuthenticated, async (req, res
         const user = await User.findById(userId);
         if (!user) return res.status(404).json({ message: "User not found." });
 
-        user.profileImg = "default-placeholder-url"; // Revert to default image
+        user.profilePicture = user.default ; 
         const updatedUser = await user.save();
 
         res.json({ message: "Profile picture removed.", user: updatedUser });
