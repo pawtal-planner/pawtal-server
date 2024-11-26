@@ -5,11 +5,11 @@ const petSchema = new Schema({
         type: String,
         required: true,
     },
-    owner: [{
+    owner: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    }],
+    },
     species: {
         type: String,
         enum: ['dog', 'cat', 'bird', 'fish', 'reptile', 'rodent', 'other'],
@@ -40,9 +40,9 @@ const petSchema = new Schema({
                 cat: "/images/cat_6363565.png",
                 bird: "images/parrot_3157528.png",
                 fish: "images/whale_1864475.png",
-                reptile: "images/turtle_1303576.png",
+                reptile: "images/chameleon_1864475.png",
                 rodent: "images/hamster_2351140.png",
-                other: "https://example.com/default-other.jpg",
+                other: "images/hen_1864475.png",
             };
             return defaultImages[this.species] || defaultImages.other;
         },
