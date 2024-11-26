@@ -1,16 +1,16 @@
 const { Schema, model } = require("mongoose");
 
 const reviewSchema = new Schema({ 
-    reviewer: [{
+    reviewer: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    }],
-    reviewService: [{
+    },
+    reviewService: {
         type: Schema.Types.ObjectId,
         ref: "Service",
         required: true,
-    }],
+    },
     rating: {
         type: Number,
         min: 0,

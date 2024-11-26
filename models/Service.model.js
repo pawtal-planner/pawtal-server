@@ -1,11 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const serviceSchema = new Schema({ 
-    provider: [{
+    provider: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    }],
+    },
     description: {
         type: String,   
         required: true,
