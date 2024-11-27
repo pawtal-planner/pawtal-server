@@ -23,6 +23,29 @@ router.get("/users/:userId", isAuthenticated, (req, res, next) => {
         .catch((err) => res.status(500).json(err));
 });
 
+// UPDATE Profile
+
+router.put("/users/:userId/profile", isAuthenticated, (req, res, next) => {
+    const { userId } = req.params;
+    const { name, location } = req.body; // Destructure data from body
+
+    User.findByIdAndUpdate(
+        userId,
+        { name, location },
+        { new: true, runValidators: true } // Return the updated document
+    )
+        .then((updatedUser) => {
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found." });
+            }
+            res.status(200).json(updatedUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({ message: "Error updating profile", error: err.message });
+        });
+});
+
 
 // UPDATE profile picture
 
@@ -32,18 +55,6 @@ router.put("/users/:userId/profile-picture", isAuthenticated, async (req, res, n
     const { profilePicture } = req.body;
 
        User.findByIdAndUpdate(userId, { profilePicture }, { new: true })
-        .then((updatedUser) => res.json(updatedUser))
-        .catch((err) => res.status(500).json(err));
-}); 
-
-// UPDATE Profile
-
-router.put("/users/:userId/profile", isAuthenticated, async (req, res, next) => {
-    const { userId } = req.params;
-    const { name } = req.body;
-    const { location } = req.body;
-
-    User.findByIdAndUpdate(userId, { name, location }, { new: true })
         .then((updatedUser) => res.json(updatedUser))
         .catch((err) => res.status(500).json(err));
 }); 
@@ -75,5 +86,7 @@ router.delete("/users/:userId/profile-picture", isAuthenticated, async (req, res
         next(err);
     }
 });
+
+
 
 module.exports = router;
