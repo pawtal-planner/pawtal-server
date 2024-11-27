@@ -20,6 +20,7 @@ const userSchema = new Schema(
     },
     isServiceProvider: {
       type: Boolean,
+      default: false,
       profilePicture: {
         type: String,
         default: "https://www.freepik.com/icon/user_1077114",
