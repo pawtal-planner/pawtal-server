@@ -13,11 +13,21 @@ router.post("/pets", isAuthenticated, (req, res, next) => {
     const pet = { petName, owner, species, bio, breed, age, weight, profilePicture } = req.body;
 
     Pet.create({ petName, owner, species, bio, breed, age, weight, profilePicture })
-        .then((response) => { res.status(201).json(response) })
-        .catch((err) => {
-            console.log("Error while creating new pet", err);
-            res.status(500).json({ message: "Error while creating new pet" });
-        });
+    .then((newPet) => {
+        // Add the pet to the user's pets array
+        return User.findByIdAndUpdate(
+            owner,
+            { $push: { pets: newPet._id } },
+            { new: true }
+        ).then(() => newPet);
+    })
+    .then((newPet) => {
+        res.status(201).json(newPet);
+    })
+    .catch((err) => {
+        console.error("Error while creating new pet:", err);
+        res.status(500).json({ message: "Error while creating new pet", error: err.message });
+    });
 });
 
 // Get /api/pets - Get all pets
