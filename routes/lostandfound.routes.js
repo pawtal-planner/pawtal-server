@@ -6,7 +6,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const LostAndFound = require("../models/LostAndFound.model");
 
 // CREATE a Lost or Found record
-router.post("/lost-and-found", isAuthenticated, (req, res, next) => {
+router.post("/lostandfound", isAuthenticated, (req, res, next) => {
     const { pet, date, location, description, contactInfo, status } = req.body;
 
     // Validate required fields
@@ -23,7 +23,7 @@ router.post("/lost-and-found", isAuthenticated, (req, res, next) => {
 });
 
 // GET All Lost and Found records
-router.get("/lost-and-found", (req, res, next) => {
+router.get("/lostandfound", (req, res, next) => {
     LostAndFound.find()
         .sort({ createdAt: -1 }) // Sort by the most recent entries
         .then((records) => res.status(200).json(records))
@@ -34,7 +34,7 @@ router.get("/lost-and-found", (req, res, next) => {
 });
 
 // GET a Single Lost or Found record by ID
-router.get("/lost-and-found/:recordId", (req, res, next) => {
+router.get("/lostandfound/:recordId", (req, res, next) => {
     const { recordId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(recordId)) {
@@ -55,7 +55,7 @@ router.get("/lost-and-found/:recordId", (req, res, next) => {
 });
 
 // UPDATE a Lost or Found record
-router.put("/lost-and-found/:recordId", isAuthenticated, (req, res, next) => {
+router.put("/lostandfound/:recordId", isAuthenticated, (req, res, next) => {
     const { recordId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(recordId)) {
@@ -76,7 +76,7 @@ router.put("/lost-and-found/:recordId", isAuthenticated, (req, res, next) => {
 });
 
 // DELETE a Lost or Found record
-router.delete("/lost-and-found/:recordId", isAuthenticated, (req, res, next) => {
+router.delete("/lostandfound/:recordId", isAuthenticated, (req, res, next) => {
     const { recordId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(recordId)) {
