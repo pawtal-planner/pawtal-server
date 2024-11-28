@@ -36,8 +36,7 @@ router.post("/appointments", isAuthenticated, async (req, res, next) => {
 // GET All Appointments
 router.get("/appointments", isAuthenticated, (req, res, next) => {
     Appointment.find()
-        .populate("service", "description", "rate") // Populate service details
-        .populate("pet", "petName", "species") // Populate pet details
+        
         .then((appointments) => res.status(200).json(appointments))
         .catch((err) => {
             console.error("Error fetching appointments:", err.message);
@@ -54,8 +53,7 @@ router.get("/appointments/:appointmentId", isAuthenticated, (req, res, next) => 
     }
 
     Appointment.findById(appointmentId)
-        .populate("service", "description", "rate")
-        .populate("pet", "petName", "species")
+    
         .then((appointment) => {
             if (!appointment) {
                 return res.status(404).json({ message: "Appointment not found." });
