@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
+
 const userSchema = new Schema(
   {
     email: {
@@ -23,7 +23,7 @@ const userSchema = new Schema(
       default: false,
       profilePicture: {
         type: String,
-        default: "https://www.freepik.com/icon/user_1077114",
+        default: "images/user_1077114.png",
       },
     },
     location: {
@@ -43,7 +43,7 @@ const userSchema = new Schema(
     }],
     profilePicture: {
       type: String,
-      default: "https://www.freepik.com/icon/user_1077012",
+      default: "images/user_1077012.png",
     },
     createdAt: {
       type: Date,
@@ -51,7 +51,7 @@ const userSchema = new Schema(
     }
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
+   
     timestamps: true,
   }
 );
